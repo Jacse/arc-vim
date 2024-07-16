@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Arc vim",
+  "version": "1.0",
+  "description": "Adds vim navigation keybindings to Arc",
+  "content_scripts": [
+    {
+      "js": ["scripts/content.js"],
+      "matches": [
+        "https://*/*",
+	"http://*/*"
+      ]
+    }
+  ]
+}
