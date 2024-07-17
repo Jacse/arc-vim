@@ -1,5 +1,7 @@
-const navigateXStep = 50;
+const navigateXStep = 100;
+const navigateInterval = 200;
 let lastKey = null;
+let holdingKey = null;
 
 function getLinkItems() {
   const mainContentEl = document.querySelector(
@@ -40,23 +42,39 @@ function listen() {
   style.appendChild(document.createTextNode(css));
 
   // Listen to keys
-  document.addEventListener("keydown", (e) => {
+
+  document.body.addEventListener("keyup", (e) => {
+    // Reset key being held down
+    holdingKey = null;
+  });
+  document.body.addEventListener("keydown", (e) => {
+    if (e.target != document.body && e.target.nodeName !== "A") {
+      // This event originates from a specific element (i.e. input element) that's not a link which we navigate with J/K
+      // Ignore
+      return;
+    }
 
     switch (e.key) {
       case "j": {
-        window.scrollBy({
-          top: navigateXStep,
-          left: 0,
-          behavior: "smooth",
-        });
+        const interval = setInterval(() => {
+          if (!holdingKey) clearInterval(interval);
+          window.scrollBy({
+            top: navigateXStep,
+            left: 0,
+            behavior: "smooth",
+          });
+        }, navigateInterval)
         break;
       }
       case "k": {
-        window.scrollBy({
-          top: -navigateXStep,
-          left: 0,
-          behavior: "smooth",
-        });
+        const interval = setInterval(() => {
+          if (!holdingKey) clearInterval(interval);
+          window.scrollBy({
+            top: -navigateXStep,
+            left: 0,
+            behavior: "smooth",
+          });
+        }, navigateInterval)
         break;
       }
       case "J": {
